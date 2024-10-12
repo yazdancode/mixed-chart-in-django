@@ -167,4 +167,4 @@ cython_debug/
 *.db
 *.json
 .vs/
-.migrations/
+dashboard/migrations/
