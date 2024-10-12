@@ -23,11 +23,11 @@
                 let myChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: Object.keys(myResult),  // اصلاح شده
+                        labels: Object.keys(myResult),
                         datasets: [
                             {
                                 label: 'محصول 1',
-                                data: Object.values(myResult).map(v => v[0]),  // اصلاح شده
+                                data: Object.values(myResult).map(v => v[0]),
                                 borderWidth: 1,
                                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                                 borderColor: 'rgba(255, 99, 132, 1)',
@@ -35,7 +35,7 @@
                             {
                                 type: 'line',
                                 label: 'محصول 2',
-                                data: Object.values(myResult).map(v => v[1]),  // اصلاح شده
+                                data: Object.values(myResult).map(v => v[1]),
                                 borderWidth: 1,
                                 backgroundColor: 'rgba(100, 200, 132, 0.2)',
                                 borderColor: 'rgba(54, 162, 235, 1)',
@@ -50,8 +50,6 @@
                         }
                     }
                 });
-
-                // توابع برای آپدیت داده‌ها
                 function updateChart1() {
                     myChart.data.datasets[0].data = [20, 10, 30, 50, 25, 30, 40, 35, 60, 20, 40, 30];
                     myChart.data.datasets[1].data = [25, 15, 45, 55, 28, 25, 35, 55, 65, 25, 45, 75];
@@ -63,8 +61,6 @@
                     myChart.data.datasets[1].data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120];
                     myChart.update();
                 }
-
-                // مدیریت برچسب‌ها
                 const mlist = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
                 let counter = 0;
 
