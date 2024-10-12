@@ -16,7 +16,6 @@ def JsonResponseView(request):
     # product =Product.objects.all().values()
     # jsondata = dumps(list(product))
 
-
     # # context ={
     # #     "result": jsondata
     # # }
@@ -25,8 +24,5 @@ def JsonResponseView(request):
     # # return JsonResponse({"result":jsondata})
     jsondata = '{"id": 1, "name": "digikala"}'
     product = loads(jsondata)
-    context = {
-        "product": product
-    }
+    context = {"product": product}
     return render(request, "dashboard/jsonResponse.html", context)
-
