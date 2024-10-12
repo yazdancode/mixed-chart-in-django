@@ -4,38 +4,43 @@
 {% block mainContent %}
 <div class="container" style="max-width: 80%; margin-top: 30px;">
     <div class="row justify-content-center">
-        <div class="col-md-6" style="text-align: center; border: 1px solid black; padding: 10px;"></div>
+        <div class="col-md-6 text-center border p-3"></div>
     </div>
+    <div class="text-center mb-3">
+        <input type="button" value="Update 1" class="btn btn-success" onclick="updateChart1()">
+        <input type="button" value="Update 2" class="btn btn-danger" onclick="updateChart2()">
+        <input type="button" value="Push" class="btn btn-danger" onclick="pushLabel()">
+        <input type="button" value="Pop" class="btn btn-danger" onclick="popLabel()">
+    </div>
+
     <div class="row justify-content-center" style="margin-top: 20px;">
-        <div class="col-md-6" style="text-align: center; border: 1px solid black; padding: 10px;">
-            <canvas id="myChart"></canvas>
+        <div class="col-md-6 text-center border p-3">
+            <canvas id="myChart" width="400" height="400"></canvas>
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             <script>
-                const ctx = document.getElementById('myChart');
-
-                new Chart(ctx, {
+                const myResult = JSON.parse("{{result | escapejs}}");
+                const ctx = document.getElementById('myChart').getContext('2d');
+                let myChart = new Chart(ctx, {
+                    type: 'bar',
                     data: {
-                        datasets: [{
-                            type: 'bar'
-                            label: 'Product1'
-                            data: [10, 20, 30, 40, 14, 10, 20, 40, 50, 10, 30, 60],
-                            borderWidth: 1,
-                            backgroundColor:[
-                                'rgba(255, 99, 132, 0.2)',
-                                'rgba(54, 162, 235, 0.2)', 
-                                'rgba(255, 206, 86, 0.2)', 
-                                'rgba(75, 192, 192, 0.2)', 
-                                'rgba(153, 102, 255, 0.2)', 
-                                'rgba(255, 159, 64, 0.2)', 
-                            ]
-                            borderColor:[
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)',
-                        }]
+                        labels: Object.keys(myResult),  // اصلاح شده
+                        datasets: [
+                            {
+                                label: 'محصول 1',
+                                data: Object.values(myResult).map(v => v[0]),  // اصلاح شده
+                                borderWidth: 1,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                            },
+                            {
+                                type: 'line',
+                                label: 'محصول 2',
+                                data: Object.values(myResult).map(v => v[1]),  // اصلاح شده
+                                borderWidth: 1,
+                                backgroundColor: 'rgba(100, 200, 132, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                            }
+                        ]
                     },
                     options: {
                         scales: {
@@ -45,6 +50,42 @@
                         }
                     }
                 });
+
+                // توابع برای آپدیت داده‌ها
+                function updateChart1() {
+                    myChart.data.datasets[0].data = [20, 10, 30, 50, 25, 30, 40, 35, 60, 20, 40, 30];
+                    myChart.data.datasets[1].data = [25, 15, 45, 55, 28, 25, 35, 55, 65, 25, 45, 75];
+                    myChart.update();
+                }
+
+                function updateChart2() {
+                    myChart.data.datasets[0].data = [5, 15, 25, 35, 45, 55, 65, 75, 85, 95, 105, 115];
+                    myChart.data.datasets[1].data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120];
+                    myChart.update();
+                }
+
+                // مدیریت برچسب‌ها
+                const mlist = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+                let counter = 0;
+
+                function pushLabel() {
+                    if (counter < mlist.length) {
+                        myChart.data.labels.push(mlist[counter++]);
+                        myChart.update();
+                    } else {
+                        alert("همه برچسب‌ها اضافه شده‌اند.");
+                    }
+                }
+
+                function popLabel() {
+                    if (myChart.data.labels.length > 0) {
+                        myChart.data.labels.pop();
+                        counter--;
+                        myChart.update();
+                    } else {
+                        alert("هیچ برچسبی برای حذف وجود ندارد.");
+                    }
+                }
             </script>
         </div>
     </div>
